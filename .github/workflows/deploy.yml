@@ -50,7 +50,8 @@ jobs:
         with:
           cluster_name: ${{ env.CLUSTER_NAME }}
           location: ${{ env.CLUSTER_ZONE }}
-
+          project_id: ${{ env.PROJECT_ID }}
+          
       - name: Update Deployment Image
         run: |
           IMAGE_PATH="asia-south1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${{ github.sha }}"
