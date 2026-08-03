@@ -22,21 +22,32 @@ jobs:
       CLUSTER_ZONE: asia-south1-a
 
     steps:
+      # Checkout Repository
       - name: Checkout Source
         uses: actions/checkout@v4
 
+      # Authenticate to Google Cloud
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Setup Cloud SDK
+      # Install gcloud CLI
+      - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      # Verify Authentication
+      - name: Verify Authentication
+        run: |
+          gcloud auth list
+          gcloud config list
+
+      # Configure Docker
       - name: Configure Docker
         run: |
           gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
 
+      # Build Docker Image
       - name: Build Docker Image
         run: |
           docker build \
@@ -44,31 +55,73 @@ jobs:
             -f welcome-app/Dockerfile \
             welcome-app
 
+      # Push Docker Image
       - name: Push Docker Image
         run: |
           docker push asia-south1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${{ github.sha }}
 
+      # Connect to GKE
       - name: Get GKE Credentials
         uses: google-github-actions/get-gke-credentials@v2
         with:
           cluster_name: ${{ env.CLUSTER_NAME }}
           location: ${{ env.CLUSTER_ZONE }}
           project_id: ${{ env.PROJECT_ID }}
-          
+
+      # Verify Cluster
+      - name: Verify Cluster
+        run: |
+          kubectl get nodes
+
+      # Replace Docker Image
       - name: Update Deployment Image
         run: |
           IMAGE_PATH="asia-south1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${{ github.sha }}"
           sed -i "s|IMAGE_PLACEHOLDER|$IMAGE_PATH|g" k8s/deployment.yaml
 
+      # Verify Deployment YAML
+      - name: Verify Deployment YAML
+        run: |
+          cat k8s/deployment.yaml
+
+      # Deploy Application
       - name: Deploy to GKE
         run: |
-          kubectl apply -f welcome-app/k8s/deployment.yaml
-          kubectl apply -f welcome-app/k8s/service.yaml
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
 
+      # Debug Information
+      - name: Debug Kubernetes
+        if: always()
+        run: |
+          echo "========== Nodes =========="
+          kubectl get nodes
+
+          echo "========== Deployments =========="
+          kubectl get deployments
+
+          echo "========== Pods =========="
+          kubectl get pods -o wide
+
+          echo "========== Services =========="
+          kubectl get svc
+
+          echo "========== Describe Deployment =========="
+          kubectl describe deployment welcome-app
+
+          echo "========== Describe Pods =========="
+          kubectl describe pods
+
+          echo "========== Pod Logs =========="
+          kubectl logs deployment/welcome-app || true
+
+      # Wait for Deployment
       - name: Wait for Rollout
         run: |
-          kubectl rollout status deployment/welcome-app
+          kubectl rollout status deployment/welcome-app --timeout=300s
 
+      # Show Services
       - name: Get Service
         run: |
           kubectl get svc
+          kubectl get ingress || true
