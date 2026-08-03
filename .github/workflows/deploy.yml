@@ -116,8 +116,9 @@ jobs:
           kubectl logs deployment/welcome-app || true
 
       # Wait for Deployment
-      - name: Wait for Rollout
+      - name: Restart Deployment
         run: |
+          kubectl rollout restart deployment/welcome-app
           kubectl rollout status deployment/welcome-app --timeout=300s
 
       # Show Services
