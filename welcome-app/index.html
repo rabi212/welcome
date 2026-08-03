@@ -1,1 +1,336 @@
-Welcome To My World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome To My World</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(-45deg,#ff006e,#8338ec,#3a86ff,#06d6a0,#ffd166,#ef476f);
+background-size:600% 600%;
+animation:bg 12s ease infinite;
+position:relative;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* Lightning */
+
+.lightning{
+position:absolute;
+width:3px;
+height:100%;
+background:white;
+opacity:0;
+filter:blur(1px);
+animation:flash 7s infinite;
+}
+
+.lightning:nth-child(1){
+left:20%;
+animation-delay:1s;
+}
+
+.lightning:nth-child(2){
+left:55%;
+animation-delay:4s;
+}
+
+.lightning:nth-child(3){
+left:82%;
+animation-delay:2.5s;
+}
+
+@keyframes flash{
+
+0%,95%,100%{
+opacity:0;
+}
+
+96%{
+opacity:1;
+box-shadow:
+0 0 20px white,
+0 0 50px cyan,
+0 0 100px white;
+}
+
+97%{
+opacity:0;
+}
+
+98%{
+opacity:1;
+}
+
+99%{
+opacity:0;
+}
+
+}
+
+/* Floating Bubbles */
+
+.circle{
+position:absolute;
+border-radius:50%;
+background:rgba(255,255,255,.15);
+animation:float 15s linear infinite;
+}
+
+.circle:nth-child(4){
+width:80px;
+height:80px;
+left:10%;
+animation-duration:18s;
+}
+
+.circle:nth-child(5){
+width:150px;
+height:150px;
+right:15%;
+animation-duration:25s;
+}
+
+.circle:nth-child(6){
+width:60px;
+height:60px;
+bottom:10%;
+left:40%;
+animation-duration:12s;
+}
+
+.circle:nth-child(7){
+width:120px;
+height:120px;
+bottom:-50px;
+right:35%;
+animation-duration:20s;
+}
+
+@keyframes float{
+
+0%{
+transform:translateY(100vh) rotate(0deg);
+}
+
+100%{
+transform:translateY(-120vh) rotate(360deg);
+}
+
+}
+
+/* Glass Card */
+
+.card{
+
+position:relative;
+z-index:100;
+
+width:800px;
+max-width:90%;
+
+padding:50px;
+
+text-align:center;
+
+border-radius:30px;
+
+background:rgba(255,255,255,.15);
+
+backdrop-filter:blur(20px);
+
+border:1px solid rgba(255,255,255,.4);
+
+box-shadow:0 20px 60px rgba(0,0,0,.4);
+
+color:white;
+
+}
+
+.logo{
+
+font-size:80px;
+
+animation:spin 8s linear infinite;
+
+}
+
+@keyframes spin{
+
+100%{
+transform:rotate(360deg);
+}
+
+}
+
+h1{
+
+margin-top:15px;
+
+font-size:60px;
+
+font-weight:bold;
+
+text-shadow:
+0 0 10px white,
+0 0 30px cyan,
+0 0 50px blue;
+
+}
+
+.subtitle{
+
+margin-top:20px;
+
+font-size:24px;
+
+line-height:40px;
+
+}
+
+button{
+
+margin-top:40px;
+
+padding:18px 45px;
+
+font-size:20px;
+
+border:none;
+
+border-radius:50px;
+
+cursor:pointer;
+
+background:white;
+
+color:#6a11cb;
+
+font-weight:bold;
+
+transition:.4s;
+
+box-shadow:0 15px 40px rgba(0,0,0,.4);
+
+}
+
+button:hover{
+
+transform:scale(1.08);
+
+background:#ffd60a;
+
+color:black;
+
+}
+
+#msg{
+
+margin-top:35px;
+
+font-size:26px;
+
+font-weight:bold;
+
+text-shadow:0 0 15px white;
+
+min-height:40px;
+
+}
+
+.footer{
+
+margin-top:40px;
+
+font-size:18px;
+
+opacity:.9;
+
+}
+
+.footer strong{
+
+color:#ffe600;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="lightning"></div>
+<div class="lightning"></div>
+<div class="lightning"></div>
+
+<div class="circle"></div>
+<div class="circle"></div>
+<div class="circle"></div>
+<div class="circle"></div>
+
+<div class="card">
+
+<div class="logo">🚀🌍</div>
+
+<h1>Welcome To My World</h1>
+
+<div class="subtitle">
+
+Cloud Computing ☁️ <br>
+
+Docker 🐳 • Kubernetes ☸️ • DevOps ⚙️ <br>
+
+Google Cloud Platform 🚀
+
+</div>
+
+<button onclick="welcome()">
+
+Enter My World ✨
+
+</button>
+
+<div id="msg"></div>
+
+<div class="footer">
+
+Designed by <strong>Rabi</strong> ❤️
+
+</div>
+
+</div>
+
+<script>
+
+function welcome(){
+
+document.getElementById("msg").innerHTML=
+
+"🎉 Welcome! Your application is running successfully on Google Kubernetes Engine.";
+
+}
+
+</script>
+
+</body>
+</html>
