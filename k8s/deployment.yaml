@@ -3,6 +3,8 @@ kind: Deployment
 
 metadata:
   name: welcome-app
+  labels:
+    app: welcome-app
 
 spec:
   replicas: 1
@@ -18,7 +20,19 @@ spec:
 
     spec:
       containers:
-      - name: welcome-app
-        image: IMAGE_PLACEHOLDER
-        ports:
-        - containerPort: 80
+        - name: welcome-app
+          image: IMAGE_PLACEHOLDER
+
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 80
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
