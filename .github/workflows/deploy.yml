@@ -39,7 +39,10 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t asia-south1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${{ github.sha }} .
+          docker build \
+            -t asia-south1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${{ github.sha }} \
+            -f welcome-app/Dockerfile \
+            welcome-app
 
       - name: Push Docker Image
         run: |
