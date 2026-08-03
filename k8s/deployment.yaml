@@ -9,6 +9,9 @@ metadata:
 spec:
   replicas: 1
 
+  strategy:
+    type: Recreate
+
   selector:
     matchLabels:
       app: welcome-app
@@ -21,6 +24,7 @@ spec:
     spec:
       containers:
         - name: welcome-app
+
           image: IMAGE_PLACEHOLDER
 
           imagePullPolicy: Always
@@ -30,9 +34,9 @@ spec:
 
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "25m"
+              memory: "32Mi"
 
             limits:
-              cpu: "500m"
-              memory: "256Mi"
+              cpu: "100m"
+              memory: "64Mi"
